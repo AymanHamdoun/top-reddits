@@ -40,7 +40,7 @@ impl SubRedditPostLoader {
     }
 
     fn load_posts_from_url(&mut self, url: String, count: u32) {
-        let response = ureq::get(api_url).call().into_string();
+        let response = ureq::get(url).call().into_string();
         let response_string = match response {
             Ok(r) => r,
             Err(e) => "".to_string()
