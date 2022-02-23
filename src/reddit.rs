@@ -3,9 +3,9 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RedditPost {
-    title: String,
-    url: String,
-    selftext: String
+    pub title: String,
+    pub url: String,
+    pub selftext: String
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -31,7 +31,6 @@ impl SubRedditPostLoader {
 
     pub fn load_top(&mut self, count: u32) {
         let api_url = (self.subreddit_url.clone() + "/top/.json?limit=" + count.to_string().as_str());
-        println!("{}", api_url);
 
         let response = ureq::get(api_url).call().into_string();
         let response_string = match response {
@@ -53,7 +52,6 @@ impl SubRedditPostLoader {
                 url: p.get("data").unwrap().get("url").unwrap().to_string()
             });
         }
-
     }
 }
 
