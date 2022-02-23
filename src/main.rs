@@ -1,39 +1,17 @@
-use serde_json::{Value, Result, json};
-use serde::{Deserialize, Serialize};
+use crate::reddit::SubRedditPostLoader;
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Post {
-    title: String,
-    url: String,
-    selftext: String
-}
+mod reddit;
 
 fn main() {
-    println!("Application Starting ... ");
+    let args: Vec<String> = std::env::args().collect();
+    let subreddit_name: &str = args[1].as_str();
+    let top_count: u32 = args[1].parse().unwrap_or(2);
 
-    let response = ureq::get("https://www.reddit.com/r/lebanon/top/.json?count=20").call().into_string();
-    let response_string = match response {
-        Ok(r) => r,
-        Err(e) => "".to_string()
-    };
+    println!("Getting top {} posts from r/{}", top_count, subreddit_name);
 
-    if response_string.is_empty() {
-        panic!("Sorry, I seem to have crashed !");
-    }
 
-    let v: Value = serde_json::from_str(response_string.as_str()).unwrap();
+    let mut subreddit_post_loader = SubRedditPostLoader::from_subreddit(subreddit_name);
+    subreddit_post_loader.load_top(top_count);
 
-    let mut posts: Vec<Post> = vec![];
-    let post_v = &v["data"]["children"].as_array().unwrap().to_vec();
-
-    for (i, p) in post_v.iter().enumerate() {
-        posts.push(Post {
-            title: p.get("data").unwrap().get("title").unwrap().to_string(),
-            selftext: p.get("data").unwrap().get("selftext").unwrap().to_string(),
-            url: p.get("data").unwrap().get("url").unwrap().to_string()
-        });
-    }
-
-    dbg!(posts);
-
+    dbg!(subreddit_post_loader.get());
 }
