@@ -7,7 +7,7 @@ mod reddit;
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let subreddit_name: &str = args[1].as_str();
-    let top_count: u32 = args[2].parse().unwrap_or(2);
+    let top_count: u32 = args[2].parse::<u32>().unwrap();
 
     green!("Getting top {} posts from r/{}\n", top_count, subreddit_name);
 
