@@ -17,7 +17,7 @@ fn main() {
         top_count = args[2].parse::<u32>().unwrap();
     }
 
-    let mut filter: String = String::from(":top");
+    let mut filter: String = String::from("top");
     if args.len() >= 4 {
         filter = args[3].to_string();
     }
@@ -28,9 +28,9 @@ fn main() {
     let mut subreddit_post_loader = SubRedditPostLoader::from_subreddit(subreddit_name);
 
     match filter.as_str() {
-        ":top" => subreddit_post_loader.load_top(top_count),
-        ":new" => subreddit_post_loader.load_new(top_count),
-        _ => {}
+        "top" => subreddit_post_loader.load_top(top_count),
+        "new" => subreddit_post_loader.load_new(top_count),
+        _ => subreddit_post_loader.load_top(top_count)
     }
 
     print_to_terminal(subreddit_post_loader.get())
