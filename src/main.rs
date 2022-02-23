@@ -22,7 +22,7 @@ fn main() {
         filter = args[3].to_string();
     }
 
-    green!("Getting {} {} posts from r/{}\n", filter, top_count, subreddit_name);
+    green!("Getting {} {} posts from r/{}\n", top_count, filter, subreddit_name);
 
 
     let mut subreddit_post_loader = SubRedditPostLoader::from_subreddit(subreddit_name);
