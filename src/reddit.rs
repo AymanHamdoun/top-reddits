@@ -31,7 +31,15 @@ impl SubRedditPostLoader {
 
     pub fn load_top(&mut self, count: u32) {
         let api_url = (self.subreddit_url.clone() + "/top/.json?limit=" + count.to_string().as_str());
+        self.load_posts_from_url(api_url, count);
+    }
 
+    pub fn load_new(&mut self, count: u32) {
+        let api_url = (self.subreddit_url.clone() + "/new/.json?limit=" + count.to_string().as_str());
+        self.load_posts_from_url(api_url, count);
+    }
+
+    fn load_posts_from_url(&mut self, url: String, count: u32) {
         let response = ureq::get(api_url).call().into_string();
         let response_string = match response {
             Ok(r) => r,

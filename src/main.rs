@@ -6,14 +6,32 @@ mod reddit;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
-    let subreddit_name: &str = args[1].as_str();
-    let top_count: u32 = args[2].parse::<u32>().unwrap();
+    if args.len() < 2 {
+        red!("{}\n", "Please prove all the necessary arguments");
+    }
 
-    green!("Getting top {} posts from r/{}\n", top_count, subreddit_name);
+    let subreddit_name: &str = args[1].as_str();
+
+    let mut top_count: u32 = 3;
+    if args.len() >= 3 {
+        top_count = args[2].parse::<u32>().unwrap();
+    }
+
+    let mut filter: String = String::from(":top");
+    if args.len() >= 4 {
+        filter = args[3].to_string();
+    }
+
+    green!("Getting {} {} posts from r/{}\n", filter, top_count, subreddit_name);
 
 
     let mut subreddit_post_loader = SubRedditPostLoader::from_subreddit(subreddit_name);
-    subreddit_post_loader.load_top(top_count);
+
+    match filter.as_str() {
+        ":top" => subreddit_post_loader.load_top(top_count),
+        ":new" => subreddit_post_loader.load_new(top_count),
+        _ => {}
+    }
 
     print_to_terminal(subreddit_post_loader.get())
 }
