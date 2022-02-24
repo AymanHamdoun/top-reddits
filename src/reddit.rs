@@ -9,6 +9,8 @@ pub struct RedditPost {
     pub author: String,
     pub upvotes: i32,
     pub downvotes: i32,
+    pub num_comments: i32,
+    pub num_awards: i32
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -59,15 +61,19 @@ impl SubRedditPostLoader {
         for (i, p) in post_v.iter().enumerate() {
             let mut clean_text= p.get("data").unwrap().get("selftext").unwrap().to_string();
             clean_text = clean_text.replace("\\n", "\n");
-            clean_text = clean_text.replace("\\\"", "");
+            clean_text = clean_text.replace("\"", "");
+
+            let clean_username = p.get("data").unwrap().get("author").unwrap().to_string().replace("\"", "");
 
             self.posts.push(RedditPost {
-                title: p.get("data").unwrap().get("title").unwrap().to_string(),
+                title: p.get("data").unwrap().get("title").unwrap().to_string().replace("\"", ""),
                 selftext: clean_text,
-                url: p.get("data").unwrap().get("url").unwrap().to_string(),
-                author: format!("u/{}", p.get("data").unwrap().get("author_fullname").unwrap().to_string()),
+                url: p.get("data").unwrap().get("url").unwrap().to_string().replace("\"", ""),
+                author: format!("u/{}", clean_username).replace("\"", ""),
                 upvotes: p.get("data").unwrap().get("ups").unwrap().to_string().parse::<i32>().unwrap(),
-                downvotes: p.get("data").unwrap().get("downs").unwrap().to_string().parse::<i32>().unwrap()
+                downvotes: p.get("data").unwrap().get("downs").unwrap().to_string().parse::<i32>().unwrap(),
+                num_comments: p.get("data").unwrap().get("num_comments").unwrap().to_string().parse::<i32>().unwrap(),
+                num_awards: p.get("data").unwrap().get("total_awards_received").unwrap().to_string().parse::<i32>().unwrap(),
             });
         }
     }

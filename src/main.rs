@@ -22,7 +22,7 @@ fn main() {
         filter = args[3].to_string();
     }
 
-    green!("Getting {} {} posts from r/{}\n", top_count, filter, subreddit_name);
+    green!("Getting {} {} posts from r/{}...\n\n", top_count, filter, subreddit_name);
 
 
     let mut subreddit_post_loader = SubRedditPostLoader::from_subreddit(subreddit_name);
@@ -38,12 +38,15 @@ fn main() {
 
 fn print_to_terminal(posts: Vec<RedditPost>) {
     for post in posts {
-        cyan!("{} posted:\n{}\n", post.author, post.title);
+        blue!("{} posted:\n", post.author);
+        cyan!("{}\n", post.title);
         if !post.selftext.is_empty() {
             grey!("{}\n", post.selftext);
         }
         yellow!("{}\n\n", post.url);
+        white!("{} Awards ", post.num_awards);
         green!("{} Upvotes ", post.upvotes);
         red!("{} Downvotes ", post.downvotes);
+        yellow!("{} Comments\n\n\n", post.num_comments);
     }
 }
