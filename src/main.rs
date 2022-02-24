@@ -38,10 +38,12 @@ fn main() {
 
 fn print_to_terminal(posts: Vec<RedditPost>) {
     for post in posts {
-        cyan!("{}\n", post.title);
+        cyan!("{} posted:\n{}\n", post.author, post.title);
         if !post.selftext.is_empty() {
             grey!("{}\n", post.selftext);
         }
-        yellow!("{}\n\n", post.url)
+        yellow!("{}\n\n", post.url);
+        green!("{} Upvotes ", post.upvotes);
+        red!("{} Downvotes ", post.downvotes);
     }
 }

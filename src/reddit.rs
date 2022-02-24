@@ -65,7 +65,7 @@ impl SubRedditPostLoader {
                 title: p.get("data").unwrap().get("title").unwrap().to_string(),
                 selftext: clean_text,
                 url: p.get("data").unwrap().get("url").unwrap().to_string(),
-                author: "u/" + p.get("data").unwrap().get("author_fullname").unwrap().to_string(),
+                author: format!("u/{}", p.get("data").unwrap().get("author_fullname").unwrap().to_string()),
                 upvotes: p.get("data").unwrap().get("ups").unwrap().to_string().parse::<i32>().unwrap(),
                 downvotes: p.get("data").unwrap().get("downs").unwrap().to_string().parse::<i32>().unwrap()
             });
