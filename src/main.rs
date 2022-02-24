@@ -43,7 +43,7 @@ fn print_to_terminal(posts: Vec<RedditPost>) {
         if !post.selftext.is_empty() {
             grey!("{}\n", post.selftext);
         }
-        yellow!("{}\n\n", post.url);
+        yellow!("\n{}\n\n", post.url);
         white!("{} Awards ", post.num_awards);
         green!("{} Upvotes ", post.upvotes);
         red!("{} Downvotes ", post.downvotes);
