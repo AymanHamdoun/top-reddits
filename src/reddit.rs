@@ -5,7 +5,10 @@ use serde::{Deserialize, Serialize};
 pub struct RedditPost {
     pub title: String,
     pub url: String,
-    pub selftext: String
+    pub selftext: String,
+    pub author: String,
+    pub upvotes: i32,
+    pub downvotes: i32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -61,7 +64,10 @@ impl SubRedditPostLoader {
             self.posts.push(RedditPost {
                 title: p.get("data").unwrap().get("title").unwrap().to_string(),
                 selftext: clean_text,
-                url: p.get("data").unwrap().get("url").unwrap().to_string()
+                url: p.get("data").unwrap().get("url").unwrap().to_string(),
+                author: "u/" + p.get("data").unwrap().get("author_fullname").unwrap().to_string(),
+                upvotes: p.get("data").unwrap().get("ups").unwrap().to_string().parse::<i32>().unwrap(),
+                downvotes: p.get("data").unwrap().get("downs").unwrap().to_string().parse::<i32>().unwrap()
             });
         }
     }
