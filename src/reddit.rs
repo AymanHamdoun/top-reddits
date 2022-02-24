@@ -1,8 +1,6 @@
 use serde_json::{Value, Result, json};
 use serde::{Deserialize, Serialize};
 
-pub const REDDIT_BASE_URL: String = String::from("https://reddit.com");
-
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RedditPost {
     pub title: String,
@@ -27,7 +25,7 @@ impl SubRedditPostLoader {
         let name = subreddit_name.to_string();
         SubRedditPostLoader {
             subreddit_name: name.clone(),
-            subreddit_url: format!("{}r/{}",REDDIT_BASE_URL.to_string(), name.as_str()),
+            subreddit_url: "https://www.reddit.com/r/".to_owned() + name.as_str(),
             posts: Vec::new()
         }
     }
