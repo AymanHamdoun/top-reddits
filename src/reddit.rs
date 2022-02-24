@@ -54,9 +54,13 @@ impl SubRedditPostLoader {
         let post_v = &v["data"]["children"].as_array().unwrap().to_vec();
 
         for (i, p) in post_v.iter().enumerate() {
+            let mut clean_text= p.get("data").unwrap().get("selftext").unwrap().to_string();
+            clean_text = clean_text.replace("\\n", "\n");
+            clean_text = clean_text.replace("\\\"", "");
+
             self.posts.push(RedditPost {
                 title: p.get("data").unwrap().get("title").unwrap().to_string(),
-                selftext: p.get("data").unwrap().get("selftext").unwrap().to_string(),
+                selftext: clean_text,
                 url: p.get("data").unwrap().get("url").unwrap().to_string()
             });
         }
